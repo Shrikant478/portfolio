@@ -24,4 +24,4 @@ def home(request):
             }
         ]
     }
-    return render(request, 'portfolio/index.html', context)
+    return render(request, 'docs/index.html', context)
