@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ name }} - {{ designation }}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* Navigation Bar */
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        nav ul li {
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        nav ul li:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        nav ul li.active {
+            background: #667eea;
+            color: white;
+        }
+
+        /* Social Icons Sidebar */
+        .social-sidebar {
+            position: fixed;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            z-index: 50;
+        }
+
+        .social-icon {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-decoration: none;
+            color: #667eea;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .social-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+
+        .social-icon.linkedin {
+            background: #0077b5;
+            color: white;
+        }
+
+        .social-icon.github {
+            background: #333;
+            color: white;
+        }
+
+        .social-icon.youtube {
+            background: #ff0000;
+            color: white;
+        }
+
+        /* Main Content Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            margin-left: 120px;
+        }
+
+        .content-section {
+            display: none;
+            background: white;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            animation: fadeIn 0.5s ease;
+            min-height: 500px;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Home Section */
+        .home-content {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .home-content h1 {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .home-content h2 {
+            font-size: 1.8rem;
+            color: #764ba2;
+            margin-bottom: 2rem;
+        }
+
+        .home-content p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        /* About Section */
+        .about-content h2 {
+            font-size: 2.5rem;
+            color: #667eea;
+            margin-bottom: 1.5rem;
+        }
+
+        .about-content p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 1rem;
+        }
+
+        .skills {
+            margin-top: 2rem;
+        }
+
+        .skills h3 {
+            font-size: 1.8rem;
+            color: #764ba2;
+            margin-bottom: 1rem;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .skill-tag {
+            background: #667eea;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-size: 1rem;
+        }
+
+        /* Projects Section */
+        .projects-content h2 {
+            font-size: 2.5rem;
+            color: #667eea;
+            margin-bottom: 2rem;
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .project-card h3 {
+            font-size: 1.5rem;
+            color: #764ba2;
+            margin-bottom: 1rem;
+        }
+
+        .project-card p {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        /* Contact Section */
+        .contact-content h2 {
+            font-size: 2.5rem;
+            color: #667eea;
+            margin-bottom: 2rem;
+        }
+
+        .contact-info {
+            font-size: 1.2rem;
+            line-height: 2;
+            color: #555;
+        }
+
+        .contact-info p {
+            margin-bottom: 1rem;
+        }
+
+        .contact-info strong {
+            color: #764ba2;
+        }
+
+        .contact-form {
+            margin-top: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #764ba2;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: #667eea;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                margin-left: 0;
+                padding: 2rem 1rem;
+            }
+
+            .social-sidebar {
+                position: static;
+                transform: none;
+                flex-direction: row;
+                justify-content: center;
+                margin: 1rem 0;
+            }
+
+            nav ul {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .home-content h1 {
+                font-size: 2rem;
+            }
+
+            .home-content h2 {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <ul>
+            <li class="nav-item active" data-section="home">Home</li>
+            <li class="nav-item" data-section="about">About</li>
+            <li class="nav-item" data-section="projects">Projects</li>
+            <li class="nav-item" data-section="contact">Contact</li>
+        </ul>
+    </nav>
+
+    <!-- Social Icons Sidebar -->
+    <div class="social-sidebar">
+        <a href="https://www.linkedin.com/in/shrikant01" target="_blank" class="social-icon linkedin" title="LinkedIn">
+            in
+        </a>
+        <a href="https://github.com/Shrikant478" target="_blank" class="social-icon github" title="GitHub">
+            &#60;/&#62;
+        </a>
+        <a href="https://www.youtube.com/@k-shrikant" target="_blank" class="social-icon youtube" title="YouTube">
+            ▶
+        </a>
+    </div>
+
+    <!-- Main Content Container -->
+    <div class="container">
+        <!-- Home Section -->
+        <section id="home" class="content-section active">
+            <div class="home-content">
+                <h1>{{ name }}</h1>
+                <h2>{{ designation }}</h2>
+                <p>Welcome to my portfolio! I'm a passionate Python developer with expertise in building robust web applications, 
+                   data-driven solutions, and scalable backend systems. I specialize in Django framework and love turning complex 
+                   problems into elegant solutions.</p>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="content-section">
+            <div class="about-content">
+                <h2>About Me</h2>
+                <p>Hello! I'm {{ name }}, a dedicated {{ designation }} with a passion for creating efficient and scalable solutions. 
+                   With extensive experience in Python and Django, I've worked on various projects ranging from web applications to 
+                   data analysis tools.</p>
+                <p>I believe in writing clean, maintainable code and following best practices. My approach combines technical expertise 
+                   with creative problem-solving to deliver high-quality solutions that meet business objectives.</p>
+                
+                <div class="skills">
+                    <h3>Technical Skills</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">Django</span>
+                        <span class="skill-tag">REST APIs</span>
+                        <span class="skill-tag">PostgreSQL</span>
+                        <span class="skill-tag">HTML/CSS</span>
+                        <span class="skill-tag">JavaScript</span>
+                        <span class="skill-tag">Git</span>
+                        <span class="skill-tag">Docker</span>
+                        <span class="skill-tag">Pandas</span>
+                        <span class="skill-tag">SQL</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="content-section">
+            <div class="projects-content">
+                <h2>My Projects</h2>
+                <div class="project-grid">
+                    {% for project in projects %}
+                    <div class="project-card">
+                        <h3>{{ project.name }}</h3>
+                        <p>{{ project.description }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="content-section">
+            <div class="contact-content">
+                <h2>Get In Touch</h2>
+                <div class="contact-info">
+                    <p><strong>Email:</strong> srikant19.rj@gmail.com</p>
+                    <p><strong>Location:</strong> India</p>
+                    <p><strong>Availability:</strong> Open to new opportunities</p>
+                </div>
+                
+                <div class="contact-form">
+                    <form>
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" placeholder="Your message here..." required></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Navigation functionality
+        const navItems = document.querySelectorAll('.nav-item');
+        const sections = document.querySelectorAll('.content-section');
+
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                // Remove active class from all nav items and sections
+                navItems.forEach(nav => nav.classList.remove('active'));
+                sections.forEach(section => section.classList.remove('active'));
+
+                // Add active class to clicked nav item
+                item.classList.add('active');
+
+                // Show corresponding section
+                const sectionId = item.getAttribute('data-section');
+                document.getElementById(sectionId).classList.add('active');
+            });
+        });
+
+        // Form submission handler (prevent default for demo)
+        document.querySelector('.contact-form form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Thank you for your message! This is a demo form.');
+        });
+    </script>
+</body>
+</html>
